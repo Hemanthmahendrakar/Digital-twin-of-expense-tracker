@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digital Twin Avatar</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+
+  <!-- Three.js (and its FBXLoader / OrbitControls examples) via CDN import map -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <!-- Chart.js for the stat-history trend chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Digital Twin Avatar / Pod 2</p>
+      <h1>Your financial twin</h1>
+    </div>
+    <div class="last-sync" id="last-sync">No data yet</div>
+  </header>
+
+  <main class="layout">
+
+    <!-- Left: 3D viewer + pulse strip + refresh -->
+    <section class="panel viewer-card">
+      <p class="panel-title">
+        <span>Live render</span>
+        <span id="animation-state-text">idle</span>
+      </p>
+
+      <div class="viewer-frame">
+        <canvas id="avatar-canvas"></canvas>
+        <div class="viewer-state-badge" id="viewer-state-badge">idle</div>
+        <div class="viewer-loading" id="viewer-loading">loading avatar…</div>
+      </div>
+
+      <div class="pulse-strip">
+        <svg id="pulse-svg" viewBox="0 0 400 40" preserveAspectRatio="none">
+          <polyline class="pulse-line" id="pulse-line" points="" />
+        </svg>
+        <div class="pulse-label">energy<br /><strong id="pulse-energy-value">--</strong></div>
+      </div>
+
+      <div class="refresh-row">
+        <button class="refresh-btn" id="refresh-btn">Refresh</button>
+        <span class="refresh-status" id="refresh-status"></span>
+      </div>
+
+      <p class="footnote">
+        Reads from this service's own analytics snapshot of your spending.
+        Pulls fresh data from the Expense Tracker via <code>POST /api/avatar/recalculate</code>.
+      </p>
+    </section>
+
+    <!-- Right: vitals + history chart -->
+    <section class="panel">
+      <p class="panel-title"><span>Vitals</span></p>
+
+      <div class="vitals-list" id="vitals-list">
+        <div class="vital-row" data-stat="health">
+          <div class="vital-head">
+            <span class="vital-name">Health</span>
+            <span class="vital-value" data-value>--</span>
+          </div>
+          <div class="vital-track"><div class="vital-fill" data-fill style="width:0%"></div></div>
+        </div>
+        <div class="vital-row" data-stat="energy">
+          <div class="vital-head">
+            <span class="vital-name">Energy</span>
+            <span class="vital-value" data-value>--</span>
+          </div>
+          <div class="vital-track"><div class="vital-fill" data-fill style="width:0%"></div></div>
+        </div>
+        <div class="vital-row" data-stat="happiness">
+          <div class="vital-head">
+            <span class="vital-name">Happiness</span>
+            <span class="vital-value" data-value>--</span>
+          </div>
+          <div class="vital-track"><div class="vital-fill" data-fill style="width:0%"></div></div>
+        </div>
+        <div class="vital-row" data-stat="wealth_level">
+          <div class="vital-head">
+            <span class="vital-name">Wealth level</span>
+            <span class="vital-value" data-value>--</span>
+          </div>
+          <div class="vital-track"><div class="vital-fill" data-fill style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="history-panel">
+        <p class="panel-title"><span>Trend</span></p>
+        <canvas id="history-chart"></canvas>
+      </div>
+    </section>
+
+  </main>
+
+  <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

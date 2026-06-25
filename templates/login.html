@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Log in — Digital Twin Avatar</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body class="login-body">
+
+  <main class="login-wrap">
+    <section class="panel login-card">
+      <p class="eyebrow">Digital Twin Avatar / Pod 2</p>
+      <h1 class="login-title">Log in</h1>
+      <p class="footnote login-subtitle">
+        Use your existing Expense Tracker account.
+      </p>
+
+      {% if error %}
+      <div class="login-error">{{ error }}</div>
+      {% endif %}
+
+      <form class="login-form" method="post" action="{{ url_for('login') }}">
+        <input type="hidden" name="next" value="{{ request.args.get('next', '') }}" />
+
+        <label class="login-label" for="username">Username</label>
+        <input
+          class="login-input"
+          type="text"
+          id="username"
+          name="username"
+          autocomplete="username"
+          value="{{ username or '' }}"
+          required
+          autofocus
+        />
+
+        <label class="login-label" for="password">Password</label>
+        <input
+          class="login-input"
+          type="password"
+          id="password"
+          name="password"
+          autocomplete="current-password"
+          required
+        />
+
+        <button class="refresh-btn login-submit" type="submit">Log in</button>
+      </form>
+    </section>
+  </main>
+
+</body>
+</html>
