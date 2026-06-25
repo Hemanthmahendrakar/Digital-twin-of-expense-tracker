@@ -1,9 +1,8 @@
-
 pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "hemanthkumarm3/expense-tracker"
+        IMAGE_NAME = "hemanthkumarm3/digital-twin-of-expense-tracker"
     }
 
     stages {
